@@ -381,7 +381,7 @@ return function(_M)
 	icon:setBehaviour("Indicator", "Visible", handleLabelAndImageChanges)
 	icon:setBehaviour("IconImageRatio", "AspectRatio", handleLabelAndImageChanges)
 	icon:setBehaviour("IconImage", "Image", function(value)
-		local textureId = (tonumber(value) and "http://www.roblox.com/asset/?id="..value) or value or ""
+		local textureId = (tonumber(value) and ("rbxassetid://"..tostring(value))) or value or ""
 		if iconImage.Image ~= textureId then
 			handleLabelAndImageChanges()
 		end
