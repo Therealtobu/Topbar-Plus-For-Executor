@@ -263,7 +263,7 @@ function Themes.set(icon, theme)
 	-- then checking to see if the appearance of the icon needs to be updated
 	local themesJanitor = icon.themesJanitor
 	themesJanitor:Cleanup()
-	themesJanitor:add(icon.stateChanged:Connect(function()
+	themesJanitor:Add(icon.stateChanged:Connect(function()
 		Themes.change(icon)
 	end))
 	if typeof(theme) == "Instance" and theme:IsA("ModuleScript") then
