@@ -262,7 +262,7 @@ function Themes.set(icon, theme)
 	-- ensuring Deselected merge into missing Selected, saving that internal state,
 	-- then checking to see if the appearance of the icon needs to be updated
 	local themesJanitor = icon.themesJanitor
-	themesJanitor:clean()
+	themesJanitor:Cleanup()
 	themesJanitor:add(icon.stateChanged:Connect(function()
 		Themes.change(icon)
 	end))
