@@ -174,45 +174,45 @@ function Icon.new()
 	--- Janitors (for cleanup)
 	local janitor = Janitor.new()
 	self.janitor = janitor
-	self.themesJanitor = janitor:add(Janitor.new())
-	self.singleClickJanitor = janitor:add(Janitor.new())
-	self.captionJanitor = janitor:add(Janitor.new())
-	self.joinJanitor = janitor:add(Janitor.new())
-	self.menuJanitor = janitor:add(Janitor.new())
-	self.dropdownJanitor = janitor:add(Janitor.new())
+	self.themesJanitor = janitor:Add(Janitor.new())
+	self.singleClickJanitor = janitor:Add(Janitor.new())
+	self.captionJanitor = janitor:Add(Janitor.new())
+	self.joinJanitor = janitor:Add(Janitor.new())
+	self.menuJanitor = janitor:Add(Janitor.new())
+	self.dropdownJanitor = janitor:Add(Janitor.new())
 
 	-- Register
 	local iconUID = Utility.generateUID()
 	iconsDict[iconUID] = self
-	janitor:add(function()
+	janitor:Add(function()
 		iconsDict[iconUID] = nil
 	end)
 
 	-- Signals (events)
-	self.selected = janitor:add(Signal.new())
-	self.deselected = janitor:add(Signal.new())
-	self.toggled = janitor:add(Signal.new())
-	self.viewingStarted = janitor:add(Signal.new())
-	self.viewingEnded = janitor:add(Signal.new())
-	self.stateChanged = janitor:add(Signal.new())
-	self.notified = janitor:add(Signal.new())
-	self.noticeStarted = janitor:add(Signal.new())
-	self.noticeChanged = janitor:add(Signal.new())
-	self.endNotices = janitor:add(Signal.new())
-	self.toggleKeyAdded = janitor:add(Signal.new())
-	self.fakeToggleKeyChanged = janitor:add(Signal.new())
-	self.alignmentChanged = janitor:add(Signal.new())
-	self.updateSize = janitor:add(Signal.new())
-	self.resizingComplete = janitor:add(Signal.new())
-	self.joinedParent = janitor:add(Signal.new())
-	self.menuSet = janitor:add(Signal.new())
-	self.dropdownSet = janitor:add(Signal.new())
-	self.updateMenu = janitor:add(Signal.new())
-	self.startMenuUpdate = janitor:add(Signal.new())
-	self.childThemeModified = janitor:add(Signal.new())
-	self.indicatorSet = janitor:add(Signal.new())
-	self.dropdownChildAdded = janitor:add(Signal.new())
-	self.menuChildAdded = janitor:add(Signal.new())
+	self.selected = janitor:Add(Signal.new())
+	self.deselected = janitor:Add(Signal.new())
+	self.toggled = janitor:Add(Signal.new())
+	self.viewingStarted = janitor:Add(Signal.new())
+	self.viewingEnded = janitor:Add(Signal.new())
+	self.stateChanged = janitor:Add(Signal.new())
+	self.notified = janitor:Add(Signal.new())
+	self.noticeStarted = janitor:Add(Signal.new())
+	self.noticeChanged = janitor:Add(Signal.new())
+	self.endNotices = janitor:Add(Signal.new())
+	self.toggleKeyAdded = janitor:Add(Signal.new())
+	self.fakeToggleKeyChanged = janitor:Add(Signal.new())
+	self.alignmentChanged = janitor:Add(Signal.new())
+	self.updateSize = janitor:Add(Signal.new())
+	self.resizingComplete = janitor:Add(Signal.new())
+	self.joinedParent = janitor:Add(Signal.new())
+	self.menuSet = janitor:Add(Signal.new())
+	self.dropdownSet = janitor:Add(Signal.new())
+	self.updateMenu = janitor:Add(Signal.new())
+	self.startMenuUpdate = janitor:Add(Signal.new())
+	self.childThemeModified = janitor:Add(Signal.new())
+	self.indicatorSet = janitor:Add(Signal.new())
+	self.dropdownChildAdded = janitor:Add(Signal.new())
+	self.menuChildAdded = janitor:Add(Signal.new())
 
 	-- Properties
 	self.iconModule = iconModule
@@ -244,7 +244,7 @@ function Icon.new()
 	self.creationTime = os.clock()
 
 	-- Widget is the new name for an icon
-	local widget = janitor:add(_M.Widget(self, Icon))
+	local widget = janitor:Add(_M.Widget(self, Icon))
 	self.widget = widget
 	self:setAlignment()
 	
@@ -301,7 +301,7 @@ function Icon.new()
 	end)
 
 	-- Keys can be bound to toggle between Selected and Deselected
-	janitor:add(UserInputService.InputBegan:Connect(function(input, touchingAnObject)
+	janitor:Add(UserInputService.InputBegan:Connect(function(input, touchingAnObject)
 		if self.locked then
 			return
 		end
@@ -341,7 +341,7 @@ function Icon.new()
 		viewingStarted(dontSetState)
 	end)
 	local touchCount = 0
-	janitor:add(UserInputService.TouchEnded:Connect(viewingEnded))
+	janitor:Add(UserInputService.TouchEnded:Connect(viewingEnded))
 	clickRegion.MouseLeave:Connect(viewingEnded)
 	clickRegion.SelectionGained:Connect(viewingStarted)
 	clickRegion.SelectionLost:Connect(viewingEnded)
@@ -370,7 +370,7 @@ function Icon.new()
 	end)
 
 	-- Deselect when another icon is selected
-	janitor:add(anyIconSelected:Connect(function(incomingIcon)
+	janitor:Add(anyIconSelected:Connect(function(incomingIcon)
 		if incomingIcon ~= self and self.deselectWhenOtherIconSelected and incomingIcon.deselectWhenOtherIconSelected then
 			self:deselect("AutoDeselect", incomingIcon)
 		end
@@ -702,15 +702,14 @@ end
 Icon.disableStateOverlay = Icon.disableOverlay
 
 function Icon:setImage(imageId, iconState)
-	self:modifyTheme({"IconImage", "Image", imageId, iconState})
+	local assetId = (tonumber(imageId)) and ("rbxassetid://" .. tostring(imageId)) or tostring(imageId)
+	self:modifyTheme({"IconImage", "Image", assetId, iconState})
 	
 	-- This code ensures icon images are preloaded if they haven't been fetched yet
 	task.spawn(function()
-		local newIdContent = (tonumber(imageId)) and ("rbxassetid://" .. tostring(imageId)) or (imageId)
-		local initialAssetFetchStatus = ContentProvider:GetAssetFetchStatus(newIdContent)
-	
+		local initialAssetFetchStatus = ContentProvider:GetAssetFetchStatus(assetId)
 		if initialAssetFetchStatus ~= Enum.AssetFetchStatus.Success then
-			pcall(ContentProvider.PreloadAsync, ContentProvider, { newIdContent })
+			pcall(ContentProvider.PreloadAsync, ContentProvider, { assetId })
 		end
 	end)
 		
@@ -919,7 +918,7 @@ function Icon:call(callback, ...)
 end
 
 function Icon:addToJanitor(callback, methodName, index)
-	self.janitor:add(callback, methodName, index)
+	self.janitor:Add(callback, methodName, index)
 	return self
 end
 
@@ -961,7 +960,7 @@ function Icon:oneClick(bool)
 	local singleClickJanitor = self.singleClickJanitor
 	singleClickJanitor:Cleanup()
 	if bool or bool == nil then
-		singleClickJanitor:add(self.selected:Connect(function()
+		singleClickJanitor:Add(self.selected:Connect(function()
 			self:deselect("OneClick", self)
 		end))
 	end
@@ -980,7 +979,7 @@ function Icon:setCaption(text)
 		self.captionText = nil
 		return self
 	end
-	local caption = captionJanitor:add(_M.Caption(self))
+	local caption = captionJanitor:Add(_M.Caption(self))
 	caption:SetAttribute("CaptionText", text)
 	self.caption = caption
 	self.captionText = text
@@ -1068,7 +1067,7 @@ function Icon:setIndicator(keyCode)
 	-- to set an indicator for controllers as this is handled internally within the Gamepad module
 	local indicator = self.indicator
 	if not indicator then
-		indicator = self.janitor:add(_M.Indicator(self, Icon))
+		indicator = self.janitor:Add(_M.Indicator(self, Icon))
 		self.indicator = indicator
 	end
 	self.indicatorSet:Fire(keyCode)
