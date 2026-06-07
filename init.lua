@@ -17,7 +17,7 @@
 --]]
 
 -- ── CONFIG — set this to your raw hosting URL root ─────────────────────
-local BASE_URL = "https://github.com/Therealtobu/Topbar-Plus-For-Executor/"
+local BASE_URL = "https://raw.githubusercontent.com/Therealtobu/Topbar-Plus-For-Executor/main/"
 -- BASE_URL must end with "/"
 -- ───────────────────────────────────────────────────────────────────────
 
@@ -26,7 +26,7 @@ local _M = {}   -- Module registry (replaces require(script.X) hierarchy)
 -- Loads a module file from BASE_URL, calls it with _M, returns the result
 local function load(path)
     local ok, result = pcall(function()
-        local fn = loadstring(game:HttpGet(BASE_URL .. path, true))
+        local fn = loadstring(game:HttpGet(BASE_URL .. path))
         assert(fn, "Failed to compile: " .. path)
         return fn()(_M)
     end)
