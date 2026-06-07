@@ -244,9 +244,9 @@ return function(_M)
 					initialWidgetWidth += itemWidth + contentsPadding
 				end
 			end
-			local widgetMinimumWidth = widget:GetAttribute("MinimumWidth")
-			local widgetMinimumHeight = widget:GetAttribute("MinimumHeight")
-			local widgetBorderSize = widget:GetAttribute("BorderSize")
+			local widgetMinimumWidth = widget:GetAttribute("MinimumWidth") or 0
+			local widgetMinimumHeight = widget:GetAttribute("MinimumHeight") or 0
+			local widgetBorderSize = widget:GetAttribute("BorderSize") or 0
 			local widgetWidth = math.clamp(initialWidgetWidth, widgetMinimumWidth, viewportX)
 			local menuIcons = icon.menuIcons
 			local additionalWidth = 0
