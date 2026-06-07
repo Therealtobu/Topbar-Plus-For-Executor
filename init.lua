@@ -50,9 +50,9 @@ _M.Reference     = load("Reference.lua")
 _M.Utility       = load("Utility.lua")
 
 -- Themes (Default/Classic are plain data tables; init depends on Utility + Default)
-_M.ThemesDefault = load("Features/Themes/Default.lua")
-_M.ThemesClassic = load("Features/Themes/Classic.lua")
-_M.Themes        = load("Features/Themes/init.lua")
+_M.ThemesDefault = load("Features/Theme/Default.lua")
+_M.ThemesClassic = load("Features/Theme/Classic.lua")
+_M.Themes        = load("Features/Theme/init.lua")
 
 -- Elements with no cross-element deps
 _M.Selection     = load("Elements/Selection.lua")
