@@ -17,7 +17,7 @@
 --]]
 
 -- ── CONFIG — set this to your raw hosting URL root ─────────────────────
-local BASE_URL = "https://raw.githubusercontent.com/YOUR_USER/YOUR_REPO/main/TopbarPlus/"
+local BASE_URL = "https://github.com/Therealtobu/Topbar-Plus-For-Executor/main/"
 -- BASE_URL must end with "/"
 -- ───────────────────────────────────────────────────────────────────────
 
