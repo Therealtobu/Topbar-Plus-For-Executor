@@ -303,7 +303,7 @@ function Utility.clipOutside(icon, instance)
 				
 				-- Also add additionalOffset
 				offsetX -= additionalOffsetX
-				absoluteValue += UDim2.fromOffset(-offsetX, topbarInset.Min.Y)
+				absoluteValue += UDim2.fromOffset(-offsetX, topbarInset.Max.Y - topbarInset.Min.Y)
 
 				-- Finally check if within its direct parents bounds
 				checkIfOutsideParentXBounds()
