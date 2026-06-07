@@ -1,5 +1,5 @@
 return function(_M)
-return function(icon)
+	return function(icon)
 
 	local menu = Instance.new("ScrollingFrame")
 	menu.Name = "Menu"
@@ -179,4 +179,5 @@ return function(icon)
 	
 	return menu
 end
+
 end
