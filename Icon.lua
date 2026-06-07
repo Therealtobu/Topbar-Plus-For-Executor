@@ -959,7 +959,7 @@ function Icon:oneClick(bool)
 	-- When set to true the icon will automatically deselect when selected, this creates
 	-- the effect of a single click button
 	local singleClickJanitor = self.singleClickJanitor
-	singleClickJanitor:clean()
+	singleClickJanitor:Cleanup()
 	if bool or bool == nil then
 		singleClickJanitor:add(self.selected:Connect(function()
 			self:deselect("OneClick", self)
@@ -974,7 +974,7 @@ function Icon:setCaption(text)
 		return self
 	end
 	local captionJanitor = self.captionJanitor
-	self.captionJanitor:clean()
+	self.captionJanitor:Cleanup()
 	if not text or text == "" then
 		self.caption = nil
 		self.captionText = nil
@@ -997,7 +997,7 @@ end
 
 function Icon:leave()
 	local joinJanitor = self.joinJanitor
-	joinJanitor:clean()
+	joinJanitor:Cleanup()
 	return self
 end
 
@@ -1213,7 +1213,7 @@ function Icon:destroy()
 		self:leave()
 	end
 	self.isDestroyed = true
-	self.janitor:clean()
+	self.janitor:Cleanup()
 	Icon.iconRemoved:Fire(self)
 end
 Icon.Destroy = Icon.destroy
