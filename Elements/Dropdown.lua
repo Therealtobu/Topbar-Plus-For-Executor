@@ -26,7 +26,7 @@ local PADDING = 0 -- used to be 8
 		end
 		return newValue
 	end)
-	icon.janitor:add(GuiService:GetPropertyChangedSignal("PreferredTransparency"):Connect(function()
+	icon.janitor:Add(GuiService:GetPropertyChangedSignal("PreferredTransparency"):Connect(function()
 		icon:refreshAppearance(dropdown, "BackgroundTransparency")
 	end))
 
@@ -94,7 +94,7 @@ local PADDING = 0 -- used to be 8
 			{"Selection", "Position", UDim2.new(0, PADDING/2, 0, PADDING/2)},
 		})
 		task.defer(function()
-			childIcon.joinJanitor:add(function()
+			childIcon.joinJanitor:Add(function()
 				childIcon:removeModification(modificationUID)
 			end)
 		end)
@@ -191,7 +191,7 @@ local PADDING = 0 -- used to be 8
 		end
 	end
 
-	dropdownJanitor:add(icon.toggled:Connect(updateVisibility))
+	dropdownJanitor:Add(icon.toggled:Connect(updateVisibility))
 	updateVisibility()
 	--task.delay(0.2, updateVisibility)
 
@@ -218,7 +218,7 @@ local PADDING = 0 -- used to be 8
 		end)
 	end
 
-	dropdownJanitor:add(icon.toggled:Connect(updateVisibility))
+	dropdownJanitor:Add(icon.toggled:Connect(updateVisibility))
 
 	-- Ensures canvas and size stay synced (original updateMaxIcons logic)
 	local updateCount = 0
@@ -281,13 +281,13 @@ local PADDING = 0 -- used to be 8
 
 	end
 
-	dropdownJanitor:add(dropdownScroller:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(updateMaxIconsListener))
-	dropdownJanitor:add(dropdownScroller.ChildAdded:Connect(updateMaxIconsListener))
-	dropdownJanitor:add(dropdownScroller.ChildRemoved:Connect(updateChildSize)) -- rezise the dropdown when icon delects or adds
-	dropdownJanitor:add(dropdownScroller.ChildRemoved:Connect(updateMaxIconsListener))
-	dropdownJanitor:add(dropdown:GetAttributeChangedSignal("MaxIcons"):Connect(updateMaxIconsListener))
-	dropdownJanitor:add(dropdown:GetAttributeChangedSignal("MaxIcons"):Connect(updateChildSize))
-	dropdownJanitor:add(icon.childThemeModified:Connect(updateMaxIconsListener))
+	dropdownJanitor:Add(dropdownScroller:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(updateMaxIconsListener))
+	dropdownJanitor:Add(dropdownScroller.ChildAdded:Connect(updateMaxIconsListener))
+	dropdownJanitor:Add(dropdownScroller.ChildRemoved:Connect(updateChildSize)) -- rezise the dropdown when icon delects or adds
+	dropdownJanitor:Add(dropdownScroller.ChildRemoved:Connect(updateMaxIconsListener))
+	dropdownJanitor:Add(dropdown:GetAttributeChangedSignal("MaxIcons"):Connect(updateMaxIconsListener))
+	dropdownJanitor:Add(dropdown:GetAttributeChangedSignal("MaxIcons"):Connect(updateChildSize))
+	dropdownJanitor:Add(icon.childThemeModified:Connect(updateMaxIconsListener))
 	updateMaxIconsListener()
 
 	-- Ensures each child listens to visibility changes

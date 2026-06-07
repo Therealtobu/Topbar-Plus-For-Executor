@@ -43,7 +43,7 @@ return function(icon)
 		local totalIcons = #icon.menuIcons
 		if hasStartedMenu then
 			if totalIcons <= 0 then
-				menuJanitor:clean()
+				menuJanitor:Cleanup()
 				hasStartedMenu = false
 			end
 			return
@@ -51,7 +51,7 @@ return function(icon)
 		hasStartedMenu = true
 		
 		-- Listen for changes
-		menuJanitor:add(icon.toggled:Connect(function()
+		menuJanitor:Add(icon.toggled:Connect(function()
 			if #icon.menuIcons > 0 then
 				icon.updateSize:Fire()
 			end
@@ -62,7 +62,7 @@ return function(icon)
 			{"Menu", "Active", true},
 		})
 		task.defer(function()
-			menuJanitor:add(function()
+			menuJanitor:Add(function()
 				icon:removeModification(modificationUID)
 			end)
 		end)
@@ -79,8 +79,8 @@ return function(icon)
 				menu.CanvasPosition = Vector2.new(menu.CanvasPosition.X - difference, 0)
 			end
 		end
-		menuJanitor:add(icon.selected:Connect(rightAlignCanvas))
-		menuJanitor:add(menu:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(rightAlignCanvas))
+		menuJanitor:Add(icon.selected:Connect(rightAlignCanvas))
+		menuJanitor:Add(menu:GetPropertyChangedSignal("AbsoluteCanvasSize"):Connect(rightAlignCanvas))
 		
 		-- Apply a close selected image if the user hasn't applied thier own
 		local stateGroup = icon:getStateGroup()
@@ -113,7 +113,7 @@ return function(icon)
 			icon:modifyTheme({"IconSpot", "LayoutOrder", spotIndex})
 			menuGap.LayoutOrder = gapIndex
 		end
-		menuJanitor:add(icon.alignmentChanged:Connect(updateAlignent))
+		menuJanitor:Add(icon.alignmentChanged:Connect(updateAlignent))
 		updateAlignent()
 		
 		-- This updates the scrolling frame to only display a scroll
@@ -123,7 +123,7 @@ return function(icon)
 			local canvasY = menu.CanvasSize.Y
 			menu.CanvasSize = UDim2.new(0, canvasWidth, canvasY.Scale, canvasY.Offset)
 		end)
-		menuJanitor:add(icon.updateMenu:Connect(function()
+		menuJanitor:Add(icon.updateMenu:Connect(function()
 			local maxIcons = menu:GetAttribute("MaxIcons")
 			if not maxIcons then
 				return
@@ -155,10 +155,10 @@ return function(icon)
 				icon.startMenuUpdate:Fire()
 			end)
 		end
-		menuJanitor:add(menu.ChildAdded:Connect(startMenuUpdate))
-		menuJanitor:add(menu.ChildRemoved:Connect(startMenuUpdate))
-		menuJanitor:add(menu:GetAttributeChangedSignal("MaxIcons"):Connect(startMenuUpdate))
-		menuJanitor:add(menu:GetAttributeChangedSignal("MaxWidth"):Connect(startMenuUpdate))
+		menuJanitor:Add(menu.ChildAdded:Connect(startMenuUpdate))
+		menuJanitor:Add(menu.ChildRemoved:Connect(startMenuUpdate))
+		menuJanitor:Add(menu:GetAttributeChangedSignal("MaxIcons"):Connect(startMenuUpdate))
+		menuJanitor:Add(menu:GetAttributeChangedSignal("MaxWidth"):Connect(startMenuUpdate))
 		startMenuUpdate()
 	end
 	

@@ -157,7 +157,7 @@ local TEXT_SIZE = 15
 		local absolute = caption.AbsoluteSize
 		captionClone.Size = UDim2.fromOffset(absolute.X, absolute.Y)
 	end
-	captionJanitor:add(caption:GetPropertyChangedSignal("AbsoluteSize"):Connect(matchSize))
+	captionJanitor:Add(caption:GetPropertyChangedSignal("AbsoluteSize"):Connect(matchSize))
 	matchSize()
 	
 	
@@ -193,10 +193,10 @@ local TEXT_SIZE = 15
 	local TweenService = game:GetService("TweenService")
 	local RunService = game:GetService("RunService")
 	local function getCaptionPosition(customEnabled)
-		local enabled = if customEnabled ~= nil then customEnabled else isCompletelyEnabled
+		local enabled = (customEnabled ~= nil) and (customEnabled) or (isCompletelyEnabled)
 		local yOut = 2
 		local yIn = yOut + 8
-		local yOffset = if enabled then yIn else yOut
+		local yOffset = (enabled) and (yIn) or (yOut)
 		return UDim2.new(0.5, 0, 1, yOffset)
 	end
 	local function updatePosition(forcedEnabled)
@@ -209,7 +209,7 @@ local TEXT_SIZE = 15
 		-- Currently the one thing which isn't accounted for are the bounds of the screen
 		-- This would be an issue if someone sets a long caption text for the left or
 		-- right most icon
-		local enabled = if forcedEnabled ~= nil then forcedEnabled else isCompletelyEnabled
+		local enabled = (forcedEnabled ~= nil) and (forcedEnabled) or (isCompletelyEnabled)
 		local startPosition = getCaptionPosition(not enabled)
 		local endPosition = getCaptionPosition(enabled)
 		
@@ -256,17 +256,17 @@ local TEXT_SIZE = 15
 		end)
 		
 	end
-	captionJanitor:add(clickRegion:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+	captionJanitor:Add(clickRegion:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 		updatePosition()
 	end))
 	updatePosition(false)
 	
-	captionJanitor:add(icon.toggleKeyAdded:Connect(updateHotkey))
+	captionJanitor:Add(icon.toggleKeyAdded:Connect(updateHotkey))
 	for keyCodeEnum, _ in pairs(icon.bindedToggleKeys) do
 		updateHotkey(keyCodeEnum)
 		break
 	end
-	captionJanitor:add(icon.fakeToggleKeyChanged:Connect(updateHotkey))
+	captionJanitor:Add(icon.fakeToggleKeyChanged:Connect(updateHotkey))
 	local fakeToggleKey = icon.fakeToggleKey
 	if fakeToggleKey then
 		updateHotkey(fakeToggleKey)
@@ -297,7 +297,7 @@ local TEXT_SIZE = 15
 	local WAIT_DURATION = 0.5
 	local RECOVER_PERIOD = 0.3
 	local Icon = icon.iconModule.Icon
-	captionJanitor:add(icon.stateChanged:Connect(function(stateName)
+	captionJanitor:Add(icon.stateChanged:Connect(function(stateName)
 		if stateName == "Viewing" then
 			local lastClock = Icon.captionLastClosedClock
 			local clockDifference = (lastClock and os.clock() - lastClock) or 999

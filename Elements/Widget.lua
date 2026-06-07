@@ -42,7 +42,7 @@ return function(_M)
 		end
 		return newValue
 	end)
-	icon.janitor:add(GuiService:GetPropertyChangedSignal("PreferredTransparency"):Connect(function()
+	icon.janitor:Add(GuiService:GetPropertyChangedSignal("PreferredTransparency"):Connect(function()
 		icon:refreshAppearance(button, "BackgroundTransparency")
 	end))
 
@@ -399,7 +399,7 @@ return function(_M)
 	local Players = game:GetService("Players")
 	local localPlayer = Players.LocalPlayer
 	local lastLocaleId = localPlayer.LocaleId
-	icon.janitor:add(localPlayer:GetPropertyChangedSignal("LocaleId"):Connect(function()
+	icon.janitor:Add(localPlayer:GetPropertyChangedSignal("LocaleId"):Connect(function()
 		task.delay(0.2, function()
 			local newLocaleId = localPlayer.LocaleId
 			if newLocaleId ~= lastLocaleId then
