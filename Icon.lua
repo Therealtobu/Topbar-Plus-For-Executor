@@ -706,7 +706,7 @@ function Icon:setImage(imageId, iconState)
 	
 	-- This code ensures icon images are preloaded if they haven't been fetched yet
 	task.spawn(function()
-		local newIdContent = if tonumber(imageId) then `rbxassetid://{imageId}` else imageId
+		local newIdContent = (tonumber(imageId)) and ("rbxassetid://" .. tostring(imageId)) or (imageId)
 		local initialAssetFetchStatus = ContentProvider:GetAssetFetchStatus(newIdContent)
 	
 		if initialAssetFetchStatus ~= Enum.AssetFetchStatus.Success then
