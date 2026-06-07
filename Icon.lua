@@ -1219,6 +1219,4 @@ end
 Icon.Destroy = Icon.destroy
 
 return Icon
-
-	return Icon
 end
