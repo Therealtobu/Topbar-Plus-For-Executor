@@ -28,7 +28,7 @@ function Gamepad.start(incomingIcon)
 	
 	-- Public variables
 	Icon = incomingIcon
-	Icon.highlightKey = if Icon.highlightKey ~= nil then Icon.highlightKey else DEFAULT_HIGHLIGHT_KEY -- What controller key to highlight the topbar (or set to false to disable)
+	Icon.highlightKey = (Icon.highlightKey ~= nil) and (Icon.highlightKey) or (DEFAULT_HIGHLIGHT_KEY -- What controller key to highlight the topbar (or set to false to disable))
 	Icon.highlightIcon = false -- Change to a specific icon if you'd like to highlight a specific icon instead of the left-most
 	
 	-- We defer so the developer can make changes before the
@@ -56,7 +56,7 @@ function Gamepad.start(incomingIcon)
 					local clickRegion = icon:getInstance("ClickRegion")
 					local selection = icon.selection
 					if not selection then
-						selection = icon.janitor:add(Selection(Icon))
+						selection = icon.janitor:Add(Selection(Icon))
 						selection:SetAttribute("IgnoreVisibilityUpdater", true)
 						selection.Parent = icon.widget
 						icon.selection = selection
@@ -67,12 +67,12 @@ function Gamepad.start(incomingIcon)
 				if previousHighlightedIcon and previousHighlightedIcon ~= icon then
 					previousHighlightedIcon:setIndicator()
 				end
-				local newIndicator = if isUsingGamepad and not usedBOnce and not icon.parentIconUID then Enum.KeyCode.ButtonB else nil
+				local newIndicator = (isUsingGamepad and not usedBOnce and not icon.parentIconUID) and (Enum.KeyCode.ButtonB) or (nil)
 				previousHighlightedIcon = icon
 				Icon.lastHighlightedIcon = icon
 				icon:setIndicator(newIndicator)
 			else
-				local newIndicator = if isUsingGamepad and not usedIndicatorOnce then Icon.highlightKey else nil
+				local newIndicator = (isUsingGamepad and not usedIndicatorOnce) and (Icon.highlightKey) or (nil)
 				if not previousHighlightedIcon then
 					previousHighlightedIcon = Gamepad.getIconToHighlight()
 				end
@@ -105,8 +105,8 @@ function Gamepad.start(incomingIcon)
 		preferredInputChanged()
 
 		-- This allows for easy highlighting of the topbar when the
-		-- when ``Icon.highlightKey`` (i.e. DPadUp) is pressed.
-		-- If you'd like to disable, do ``Icon.highlightKey = false``
+		-- when ""Icon.highlightKey"" (i.e. DPadUp) is pressed.
+		-- If you'd like to disable, do ""Icon.highlightKey = false""
 		UserInputService.InputBegan:Connect(function(input, touchingAnObject)
 			if input.UserInputType == Enum.UserInputType.MouseButton1 then
 				-- Sometimes the Roblox gamepad glitches when combined with a cursor
