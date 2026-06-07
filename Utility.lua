@@ -150,14 +150,14 @@ end
 local Janitor = _M.Janitor
 local GuiService = game:GetService("GuiService")
 function Utility.clipOutside(icon, instance)
-	local cloneJanitor = icon.janitor:add(Janitor.new())
+	local cloneJanitor = icon.janitor:Add(Janitor.new())
 	instance.Destroying:Once(function()
 		cloneJanitor:Destroy()
 	end)
-	icon.janitor:add(instance)
+	icon.janitor:Add(instance)
 
 	local originalParent = instance.Parent
-	local clone = cloneJanitor:add(Instance.new("Frame"))
+	local clone = cloneJanitor:Add(Instance.new("Frame"))
 	clone:SetAttribute("IsAClippedClone", true)
 	clone.Name = instance.Name
 	clone.AnchorPoint = instance.AnchorPoint
@@ -183,11 +183,11 @@ function Utility.clipOutside(icon, instance)
 	local container = Icon.container
 	local function updateScreenGui()
 		local originalScreenGui = originalParent:FindFirstAncestorWhichIsA("ScreenGui")
-		screenGui = if string.match(originalScreenGui.Name, "Clipped") then originalScreenGui else container[originalScreenGui.Name.."Clipped"]
+		screenGui = (string.match(originalScreenGui.Name, "Clipped")) and (originalScreenGui) or (container[originalScreenGui.Name.."Clipped"])
 		instance.AnchorPoint = Vector2.new(0, 0)
 		instance.Parent = Utility.getClippedContainer(screenGui)
 	end
-	cloneJanitor:add(icon.alignmentChanged:Connect(updateScreenGui))
+	cloneJanitor:Add(icon.alignmentChanged:Connect(updateScreenGui))
 	updateScreenGui()
 
 	-- Lets copy over children that modify size
@@ -213,7 +213,7 @@ function Utility.clipOutside(icon, instance)
 		end
 		Utility.setVisible(instance, isVisible, "ClipHandler")
 	end
-	cloneJanitor:add(widget:GetPropertyChangedSignal("Visible"):Connect(updateVisibility))
+	cloneJanitor:Add(widget:GetPropertyChangedSignal("Visible"):Connect(updateVisibility))
 
 	local previousScroller
 	local function checkIfOutsideParentXBounds()
@@ -266,7 +266,7 @@ function Utility.clipOutside(icon, instance)
 				local connection = parentInstance:GetPropertyChangedSignal("AbsoluteWindowSize"):Connect(function()
 					checkIfOutsideParentXBounds()
 				end)
-				cloneJanitor:add(connection, "Disconnect", "TrackUtilityScroller-"..ourUID)
+				cloneJanitor:Add(connection, "Disconnect", "TrackUtilityScroller-"..ourUID)
 			end
 		end)
 	end
@@ -299,7 +299,7 @@ function Utility.clipOutside(icon, instance)
 				local guiOffset = screenGui.AbsolutePosition.X
 				--local widthDifference = guiOffset - topbarInset.Min.X
 				local oldTopbarCenterOffset = 0--widthDifference/30
-				local offsetX = if Icon.isOldTopbar then guiOffset else viewportWidth - guiWidth - oldTopbarCenterOffset
+				local offsetX = (Icon.isOldTopbar) and (guiOffset) or (viewportWidth - guiWidth - oldTopbarCenterOffset)
 				
 				-- Also add additionalOffset
 				offsetX -= additionalOffsetX
@@ -314,8 +314,8 @@ function Utility.clipOutside(icon, instance)
 		
 		-- This defer is essential as the listener may be in a different screenGui to the actor
 		local updatePropertyStaggered = Utility.createStagger(0.01, updateProperty)
-		cloneJanitor:add(clone:GetPropertyChangedSignal(absoluteProperty):Connect(updatePropertyStaggered))
-		cloneJanitor:add(clone:GetAttributeChangedSignal("ForceUpdate"):Connect(function()
+		cloneJanitor:Add(clone:GetPropertyChangedSignal(absoluteProperty):Connect(updatePropertyStaggered))
+		cloneJanitor:Add(clone:GetAttributeChangedSignal("ForceUpdate"):Connect(function()
 			updatePropertyStaggered()
 		end))
 
@@ -328,13 +328,13 @@ function Utility.clipOutside(icon, instance)
 		-- have time to redesign the entire system around that at the moment.
 		-- Here's a GIF of this bug: https://i.imgur.com/VitHdC1.gif
 		local updatePropertyPatch = Utility.createStagger(0.5, updateProperty, true)
-		cloneJanitor:add(clone:GetPropertyChangedSignal(absoluteProperty):Connect(updatePropertyPatch))
+		cloneJanitor:Add(clone:GetPropertyChangedSignal(absoluteProperty):Connect(updatePropertyPatch))
 		
 		-- When the screenGui is resized (such as when chat is hidden/shown), we need
 		-- to update the position of the clone. Ths especially fixes the following:
 		-- https://devforum.roblox.com/t/bug/1017485/1732
 		if property == "Position" then
-			cloneJanitor:add(screenGui:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+			cloneJanitor:Add(screenGui:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 				updatePropertyStaggered()
 			end))
 		end
@@ -346,7 +346,7 @@ function Utility.clipOutside(icon, instance)
 	trackProperty("Position")
 	
 	-- Track visiblity changes
-	cloneJanitor:add(instance:GetPropertyChangedSignal("Visible"):Connect(function()
+	cloneJanitor:Add(instance:GetPropertyChangedSignal("Visible"):Connect(function()
 		--print("Visiblity changed:", instance, clone, instance.Visible)
 		--clone.Visible = instance.Visible
 	end))
@@ -356,7 +356,7 @@ function Utility.clipOutside(icon, instance)
 	if shouldTrackCloneSize then
 		trackProperty("Size")
 	else
-		cloneJanitor:add(instance:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+		cloneJanitor:Add(instance:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
 			local absolute = instance.AbsoluteSize
 			clone.Size = UDim2.fromOffset(absolute.X, absolute.Y)
 		end))
@@ -369,7 +369,7 @@ function Utility.joinFeature(originalIcon, parentIcon, iconsArray, scrollingFram
 
 	-- This is resonsible for moving the icon under a feature like a dropdown
 	local joinJanitor = originalIcon.joinJanitor
-	joinJanitor:clean()
+	joinJanitor:Cleanup()
 	if not scrollingFrameOrFrame then
 		originalIcon:leave()
 		return
@@ -383,7 +383,7 @@ function Utility.joinFeature(originalIcon, parentIcon, iconsArray, scrollingFram
 		end
 		originalIcon:setAlignment(parentAlignment, true)
 	end
-	joinJanitor:add(parentIcon.alignmentChanged:Connect(updateAlignent))
+	joinJanitor:Add(parentIcon.alignmentChanged:Connect(updateAlignent))
 	updateAlignent()
 	originalIcon:modifyTheme({"IconButton", "BackgroundTransparency", 1}, "JoinModification")
 	originalIcon:modifyTheme({"ClickRegion", "Active", false}, "JoinModification")
@@ -400,9 +400,9 @@ function Utility.joinFeature(originalIcon, parentIcon, iconsArray, scrollingFram
 	local function makeSelectable()
 		clickRegion.Selectable = parentIcon.isSelected
 	end
-	joinJanitor:add(parentIcon.toggled:Connect(makeSelectable))
+	joinJanitor:Add(parentIcon.toggled:Connect(makeSelectable))
 	task.defer(makeSelectable)
-	joinJanitor:add(function()
+	joinJanitor:Add(function()
 		clickRegion.Selectable = true
 	end)
 	--
@@ -420,7 +420,7 @@ function Utility.joinFeature(originalIcon, parentIcon, iconsArray, scrollingFram
 
 	-- This is responsible for removing it from that feature and updating
 	-- their parent icon so its informed of the icon leaving it
-	joinJanitor:add(function()
+	joinJanitor:Add(function()
 		local joinedFrame = originalIcon.joinedFrame
 		if not joinedFrame then
 			return
