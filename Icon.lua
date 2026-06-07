@@ -1,5 +1,5 @@
 return function(_M)
---!nonstrict
+
 --[[
 	
 	The majority of this code is an interface designed to make it easy for you to
@@ -1218,7 +1218,7 @@ function Icon:destroy()
 end
 Icon.Destroy = Icon.destroy
 
-return Icon :: Types.StaticIcon
+return Icon
 
 	return Icon
 end
