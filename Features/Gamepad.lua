@@ -28,7 +28,7 @@ function Gamepad.start(incomingIcon)
 	
 	-- Public variables
 	Icon = incomingIcon
-	Icon.highlightKey = (Icon.highlightKey ~= nil) and (Icon.highlightKey) or (DEFAULT_HIGHLIGHT_KEY -- What controller key to highlight the topbar (or set to false to disable))
+	Icon.highlightKey = (Icon.highlightKey ~= nil) and (Icon.highlightKey) or (DEFAULT_HIGHLIGHT_KEY) -- What controller key to highlight the topbar (or set to false to disable))
 	Icon.highlightIcon = false -- Change to a specific icon if you'd like to highlight a specific icon instead of the left-most
 	
 	-- We defer so the developer can make changes before the
